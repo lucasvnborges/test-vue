@@ -60,7 +60,7 @@ describe('Criação de estudante', () => {
   })
 
   test('Espera um objeto de estudante como resposta', () => {
-    for (let key in mockStudentResponse) {
+    for (const key in mockStudentResponse) {
       expect(body).toHaveProperty(key)
     }
   })
