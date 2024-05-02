@@ -1,7 +1,10 @@
 export class SessionStorageMap<Key, Value> extends Map<Key, Value> {
   constructor() {
     super()
-    const sessionData = JSON.parse(sessionStorage.getItem('data') || '[]') as [Key, Value][]
+    const sessionData = JSON.parse(sessionStorage.getItem('data') || '[]') as [
+      Key,
+      Value
+    ][]
     if (sessionData) {
       sessionData.forEach(([key, value]) => {
         this.set(key, value)

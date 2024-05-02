@@ -57,7 +57,8 @@ describe('Gerenciamento de estado dos estudantes', () => {
     let foundStudent
     if (newStudent.id) foundStudent = findById(newStudent.id)
 
-    if (foundStudent !== undefined) expect(foundStudent.birthdate).toBe(modifiedData.birthdate)
+    if (foundStudent !== undefined)
+      expect(foundStudent.birthdate).toBe(modifiedData.birthdate)
   })
 
   test('Espera excluir um aluno da lista corretamente', async () => {

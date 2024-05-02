@@ -74,7 +74,10 @@ describe('Atualização de estudante', () => {
   beforeAll(async () => {
     const newStudentResponse = await createStudentService(mockStudentData)
     newStudentBody = await newStudentResponse.json()
-    response = await updateStudentService({ ...newStudentBody, birthdate: '05-04-1996' })
+    response = await updateStudentService({
+      ...newStudentBody,
+      birthdate: '05-04-1996'
+    })
     body = await response.json()
   }, 30000)
 

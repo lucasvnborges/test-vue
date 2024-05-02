@@ -17,7 +17,10 @@ export const handlers = [
       storage.set(id, student)
       return HttpResponse.json({ ...student, id }, { status: 201 })
     } else {
-      return HttpResponse.json({ error: 'Dados do estudante são inválidos' }, { status: 400 })
+      return HttpResponse.json(
+        { error: 'Dados do estudante são inválidos' },
+        { status: 400 }
+      )
     }
   }),
 
