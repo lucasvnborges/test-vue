@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import {
   createStudentService,
   deleteStudentService,
@@ -12,19 +12,19 @@ export const useStudentStore = defineStore('studentStore', {
     students: [] as IStudent[]
   }),
   actions: {
-    async getAll() {
+    async fetchAll() {
       const response = await getStudentsService()
       const data = await response.json()
-      this.students = data
+      this.students.push(...data)
+    },
+    findById(id: string) {
+      return this.students.find((s) => s.id === id)
     },
     async create(info: IStudent) {
       const response = await createStudentService(info)
       const data = await response.json()
       this.students.push(data)
       return data
-    },
-    findById(id: string) {
-      return this.students.find((s) => s.id === id)
     },
     async update(info: IStudent) {
       const response = await updateStudentService(info)
@@ -44,3 +44,7 @@ export const useStudentStore = defineStore('studentStore', {
     }
   }
 })
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useStudentStore, import.meta.hot))
+}
