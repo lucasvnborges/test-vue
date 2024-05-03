@@ -8,6 +8,14 @@ export const handlers = [
     return HttpResponse.json(Array.from(storage.values()))
   }),
 
+  http.get('/students/:id', async ({ params }) => {
+    const { id } = params
+    const students = Array.from(storage.values())
+    const find = students.find((s) => s.id === id)
+
+    if (find) return HttpResponse.json(find)
+  }),
+
   http.post('/students', async ({ request }) => {
     const id = Date.now().toString()
     const student = await request.json()
