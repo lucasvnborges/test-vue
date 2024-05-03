@@ -1,5 +1,5 @@
 <template>
-  <div class="container md:mx-auto p-6 mt-4">
+  <div class="container mx-auto p-6 mt-4">
     <div class="max-w-md mx-auto">
       <div class="flex flex-row items-center">
         <button
@@ -43,33 +43,38 @@
           name="name"
           label="Nome completo"
           v-model="formState.name"
+          :disabled="loading"
         />
         <FormKit
           type="text"
           name="motherName"
           label="Nome da mãe"
           v-model="formState.motherName"
+          :disabled="loading"
         />
         <FormKit
           type="date"
           name="birthdate"
           label="Data de nascimento"
           v-model="formState.birthdate"
+          :disabled="loading"
         />
         <FormKit
           type="date"
           name="enrollmentPeriod"
           label="Data de ingresso"
           v-model="formState.enrollmentPeriod"
+          :disabled="loading"
         />
 
         <FormKit
           type="submit"
+          :disabled="loading"
           :label="isEditing ? 'Atualizar' : 'Cadastrar'"
           :classes="{
             input: `
               $reset text-gray-900 bg-white border border-gray-300 focus:outline-none 
-              hover:bg-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 w-full mt-2
+              font-medium rounded-lg text-sm px-5 py-2.5 w-full mt-2
             `
           }"
         />
@@ -90,8 +95,15 @@ import type { IStudent } from '@/types'
 
 const { replace } = useRouter()
 const { params } = useRoute()
-const { create, update, fetchStudentById, formState, setFormState, $reset } =
-  useStudentStore()
+const {
+  create,
+  update,
+  fetchStudentById,
+  formState,
+  setFormState,
+  $reset,
+  loading
+} = useStudentStore()
 
 const isEditing = !!params.id
 
