@@ -1,44 +1,46 @@
 # usabit-test-vue
 
-This template should help get you started developing with Vue 3 in Vite.
+Projeto para guardar as informações dos alunos para futuras utilizações.
 
-## Recommended IDE Setup
+### As tecnologias utilizadas foram
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- Vite
+- Vue3
+- Vue Router
+- Pinia
+- Flowbite (UI components)
+- Formkit
+- Zod
+- Tailwindcss
+- Vitest
+- Mswjs (mock de api)
+- Eslint
 
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
+## Instalação dos pacotes
 
 ```sh
 pnpm install
 ```
 
-### Compile and Hot-Reload for Development
+### Compilação e Hot-Reload no modo desenvolvimento
 
 ```sh
 pnpm dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Verificação de tipo, compilação e redução para produção
 
 ```sh
 pnpm build
 ```
 
-### Run Unit Tests with [Vitest](https://vitest.dev/)
+### Execute testes com [Vitest](https://vitest.dev/)
 
 ```sh
-pnpm test:unit
+pnpm test
 ```
 
-### Run End-to-End Tests with [Playwright](https://playwright.dev)
+### Execute testes ponta a ponta com [Playwright](https://playwright.dev)
 
 ```sh
 # Install browsers for the first run
@@ -57,7 +59,7 @@ pnpm test:e2e tests/example.spec.ts
 pnpm test:e2e --debug
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lint com [ESLint](https://eslint.org/)
 
 ```sh
 pnpm lint
