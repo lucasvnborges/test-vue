@@ -9,9 +9,8 @@ export const handlers = [
   }),
 
   http.get('/students/:id', async ({ params }) => {
-    const { id } = params
     const students = Array.from(storage.values())
-    const find = students.find((s) => s.id === id)
+    const find = students.find((s) => s.id === params.id)
 
     if (find) return HttpResponse.json(find)
   }),
@@ -24,11 +23,6 @@ export const handlers = [
       student.id = id
       storage.set(id, student)
       return HttpResponse.json({ ...student, id }, { status: 201 })
-    } else {
-      return HttpResponse.json(
-        { error: 'Dados do estudante são inválidos' },
-        { status: 400 }
-      )
     }
   }),
 
@@ -40,8 +34,7 @@ export const handlers = [
   }),
 
   http.delete('/students/:id', ({ params }) => {
-    const { id } = params
-    storage.delete(id.toString())
+    storage.delete(params.id.toString())
     // O mswjs tem limitações quanto ao status 204
     return HttpResponse.json({}, { status: 200 })
   })
