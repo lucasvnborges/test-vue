@@ -27,21 +27,26 @@ describe('Gerenciamento de estado dos estudantes', () => {
 
   test('Espera que a lista de estudantes esteja vazia', () => {
     const { students } = useStudentStore()
-    expect(students.length).toBe(0)
+    expect(students.value.length).toBe(0)
+  })
+
+  test('Espera que a lista de estudantes esteja vazia ao resetar o state', async () => {
+    const { students, create, reset } = useStudentStore()
+    await create(mockStudentData)
+    reset()
+    expect(students.value.length).toBe(0)
   })
 
   test('Espera que a lista de estudantes contenha um novo aluno', async () => {
     const { students, create } = useStudentStore()
     await create(mockStudentData)
-    expect(students.length).toBe(1)
+    expect(students.value.length).toBe(1)
   })
 
   test('Espera que a busca por id encontre um novo aluno', async () => {
     const { create, findById } = useStudentStore()
     const newStudent = await create(mockStudentData)
-
-    let foundStudent
-    if (newStudent.id) foundStudent = findById(newStudent.id)
+    const foundStudent = findById(newStudent.id)
 
     if (foundStudent !== undefined) expect(foundStudent.id).toBe(newStudent.id)
   })
@@ -51,12 +56,9 @@ describe('Gerenciamento de estado dos estudantes', () => {
     const newStudent = await create(mockStudentData)
     const modifiedData = { ...newStudent, birthdate: '20-05-1995' }
     const updateStudent = await update(modifiedData)
+    const foundStudent = findById(newStudent.id)
 
     expect(updateStudent).toBeTruthy()
-
-    let foundStudent
-    if (newStudent.id) foundStudent = findById(newStudent.id)
-
     if (foundStudent !== undefined)
       expect(foundStudent.birthdate).toBe(modifiedData.birthdate)
   })
@@ -64,12 +66,9 @@ describe('Gerenciamento de estado dos estudantes', () => {
   test('Espera excluir um aluno da lista corretamente', async () => {
     const { create, findById, exclude } = useStudentStore()
     const newStudent = await create(mockStudentData)
-
-    let foundStudent
-    if (newStudent.id) foundStudent = findById(newStudent.id)
+    const foundStudent = findById(newStudent.id)
 
     if (foundStudent !== undefined) expect(foundStudent.id).toBe(newStudent.id)
-
     if (newStudent.id) {
       const excludeStudent = exclude(newStudent.id)
       expect(excludeStudent).toBeTruthy()
