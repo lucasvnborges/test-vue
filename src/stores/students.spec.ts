@@ -31,9 +31,9 @@ describe('Gerenciamento de estado dos estudantes', () => {
   })
 
   test('Espera que a lista de estudantes esteja vazia ao resetar o state', async () => {
-    const { students, create, reset } = useStudentStore()
+    const { students, create, $reset } = useStudentStore()
     await create(mockStudentData)
-    reset()
+    $reset()
     expect(students.value.length).toBe(0)
   })
 
