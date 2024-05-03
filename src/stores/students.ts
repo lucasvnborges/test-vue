@@ -8,7 +8,7 @@ import {
 } from '@/services/students'
 import type { IStudent } from '@/types'
 
-export const useStudentStore = defineStore('studentStore', () => {
+export const useStudentStore = defineStore('students', () => {
   const list = ref<IStudent[]>([])
 
   function reset() {
