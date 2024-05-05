@@ -7,7 +7,7 @@ import {
   updateStudentService,
   deleteStudentService,
   getStudentByIdService
-} from './students'
+} from '../../services/students'
 import type { IStudent } from '@/types'
 import { mockStudentData, mockStudentResponse } from '@/mocks/data'
 

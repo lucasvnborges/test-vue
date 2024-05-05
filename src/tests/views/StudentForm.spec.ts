@@ -38,7 +38,7 @@ afterAll(() => {
   server.close()
 })
 
-describe('Cadastro de estudantes', () => {
+describe('Formulário de cadastro dos estudantes', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
   })
@@ -60,7 +60,7 @@ describe('Cadastro de estudantes', () => {
     const fields = Object.keys(mockFormData)
 
     fields.forEach((field, index) => {
-      console.log(wrapper.find(`form`).html())
+      // console.log(wrapper.find(`form`).html())
       // expect(
       //   wrapper.find(`[id="input_${index}-${field}:zod"]`).text()
       // ).toBeTypeOf('string')

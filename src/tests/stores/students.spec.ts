@@ -2,7 +2,7 @@ import { setupServer } from 'msw/node'
 import { handlers } from '@/mocks/handlers'
 import { describe, test, expect, beforeEach, beforeAll, afterAll } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useStudentStore } from './students'
+import { useStudentStore } from '../../stores/students'
 import { mockStudentData } from '@/mocks/data'
 
 const server = setupServer(...handlers)
