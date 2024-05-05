@@ -1,10 +1,11 @@
-import { http, HttpResponse } from 'msw'
+import { delay, http, HttpResponse } from 'msw'
 import { SessionStorageMap } from './sessionStorage'
 
 const storage = new SessionStorageMap<string, any>()
 
 export const handlers = [
-  http.get('/students', () => {
+  http.get('/students', async () => {
+    await delay(1000)
     return HttpResponse.json(Array.from(storage.values()))
   }),
 
