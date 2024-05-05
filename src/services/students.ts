@@ -5,7 +5,8 @@ const headers = {
   'Content-Type': 'application/json'
 }
 
-const errors = {
+const ErrorMessages = {
+  server: 'A conexão com o servidor falhou. Por favor, tente novamente!',
   get: 'Erro na resposta do servidor ao obter alunos',
   getById: 'Erro na resposta do servidor ao obter aluno por ID',
   create: 'Erro na resposta do servidor ao criar aluno',
@@ -14,7 +15,7 @@ const errors = {
 }
 
 function errorAlert() {
-  toast('A conexão com o servidor falhou. Por favor, tente novamente!', {
+  toast(ErrorMessages.server, {
     type: 'error',
     position: 'top-center',
     dangerouslyHTMLString: true
@@ -25,7 +26,7 @@ export async function getStudentsService() {
   try {
     const response = await fetch('/students')
     if (!response.ok) {
-      throw new Error(errors.get)
+      throw new Error(ErrorMessages.get)
     }
     return response
   } catch (error) {
@@ -38,7 +39,7 @@ export async function getStudentByIdService(id: string) {
   try {
     const response = await fetch(`/students/${id}`)
     if (!response.ok) {
-      throw new Error(errors.getById)
+      throw new Error(ErrorMessages.getById)
     }
     return response
   } catch (error) {
@@ -55,7 +56,7 @@ export async function createStudentService(data: IStudent) {
       body: JSON.stringify(data)
     })
     if (!response.ok) {
-      throw new Error(errors.create)
+      throw new Error(ErrorMessages.create)
     }
     return response
   } catch (error) {
@@ -72,7 +73,7 @@ export async function updateStudentService(data: IStudent) {
       body: JSON.stringify(data)
     })
     if (!response.ok) {
-      throw new Error(errors.update)
+      throw new Error(ErrorMessages.update)
     }
     return response
   } catch (error) {
@@ -87,7 +88,7 @@ export async function deleteStudentService(id: string) {
       method: 'DELETE'
     })
     if (!response.ok) {
-      throw new Error(errors.delete)
+      throw new Error(ErrorMessages.delete)
     }
     return response
   } catch (error) {
