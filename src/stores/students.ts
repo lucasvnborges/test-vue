@@ -33,6 +33,7 @@ export const useStudentStore = defineStore('students', () => {
 
   async function fetchAll() {
     try {
+      isLoading.value = true
       const response = await getStudentsService()
       const data = await response.json()
       list.value = data
@@ -44,6 +45,7 @@ export const useStudentStore = defineStore('students', () => {
 
   async function getById(id: string) {
     try {
+      isLoading.value = true
       const response = await getStudentByIdService(id)
       return response.json()
     } finally {
@@ -81,6 +83,7 @@ export const useStudentStore = defineStore('students', () => {
 
   async function exclude(id: string) {
     try {
+      isLoading.value = true
       await deleteStudentService(id)
       list.value = list.value.filter((s) => s.id !== id)
       return true
