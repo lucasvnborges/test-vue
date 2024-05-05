@@ -5,6 +5,14 @@ const headers = {
   'Content-Type': 'application/json'
 }
 
+const errors = {
+  get: 'Erro na resposta do servidor ao obter alunos',
+  getById: 'Erro na resposta do servidor ao obter aluno por ID',
+  create: 'Erro na resposta do servidor ao criar aluno',
+  update: 'Erro na resposta do servidor ao atualizar aluno',
+  delete: 'Erro na resposta do servidor ao excluir aluno'
+}
+
 function errorAlert() {
   toast('A conexão com o servidor falhou. Por favor, tente novamente!', {
     type: 'error',
@@ -14,66 +22,76 @@ function errorAlert() {
 }
 
 export async function getStudentsService() {
-  const response = await fetch('/students')
-
-  if (!response.ok) {
+  try {
+    const response = await fetch('/students')
+    if (!response.ok) {
+      throw new Error(errors.get)
+    }
+    return response
+  } catch (error) {
     errorAlert()
-    throw new Error('getStudentsService')
+    throw error
   }
-
-  return response
 }
 
 export async function getStudentByIdService(id: string) {
-  const response = await fetch(`/students/${id}`)
-
-  if (!response.ok) {
+  try {
+    const response = await fetch(`/students/${id}`)
+    if (!response.ok) {
+      throw new Error(errors.getById)
+    }
+    return response
+  } catch (error) {
     errorAlert()
-    throw new Error('getStudentByIdService')
+    throw error
   }
-
-  return response
 }
 
 export async function createStudentService(data: IStudent) {
-  const response = await fetch('/students', {
-    headers,
-    method: 'POST',
-    body: JSON.stringify(data)
-  })
-
-  if (!response.ok) {
+  try {
+    const response = await fetch('/students', {
+      headers,
+      method: 'POST',
+      body: JSON.stringify(data)
+    })
+    if (!response.ok) {
+      throw new Error(errors.create)
+    }
+    return response
+  } catch (error) {
     errorAlert()
-    throw new Error('createStudentService')
+    throw error
   }
-
-  return response
 }
 
 export async function updateStudentService(data: IStudent) {
-  const response = await fetch(`/students/${data.id}`, {
-    headers,
-    method: 'PUT',
-    body: JSON.stringify(data)
-  })
-
-  if (!response.ok) {
+  try {
+    const response = await fetch(`/students/${data.id}`, {
+      headers,
+      method: 'PUT',
+      body: JSON.stringify(data)
+    })
+    if (!response.ok) {
+      throw new Error(errors.update)
+    }
+    return response
+  } catch (error) {
     errorAlert()
-    throw new Error('updateStudentService')
+    throw error
   }
-
-  return response
 }
 
 export async function deleteStudentService(id: string) {
-  const response = await fetch(`/students/${id}`, {
-    method: 'DELETE'
-  })
-
-  if (!response.ok) {
+  try {
+    const response = await fetch(`/students/${id}`, {
+      method: 'DELETE'
+    })
+    if (!response.ok) {
+      throw new Error(errors.delete)
+    }
+    return response
+  } catch (error) {
     errorAlert()
-    throw new Error('deleteStudentService')
+    throw error
   }
-
-  return response
 }
