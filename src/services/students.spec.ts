@@ -5,7 +5,8 @@ import {
   getStudentsService,
   createStudentService,
   updateStudentService,
-  deleteStudentService
+  deleteStudentService,
+  getStudentByIdService
 } from './students'
 import type { IStudent } from '@/types'
 import { mockStudentData, mockStudentResponse } from '@/mocks/data'
@@ -20,16 +21,17 @@ afterAll(() => {
   server.close()
 })
 
-describe('Listagem de estudantes', () => {
+describe('Listar estudantes', () => {
   let response: Response
   let body: IStudent[]
 
   beforeAll(async () => {
+    await createStudentService(mockStudentData)
     response = await getStudentsService()
     body = await response.json()
   }, 30000)
 
-  test('Espera o status de resposta 200', async () => {
+  test('Espera o status 200 como resposta', async () => {
     expect(response.status).toBe(200)
   })
 
@@ -37,12 +39,41 @@ describe('Listagem de estudantes', () => {
     expect(response.headers.get('Content-Type')).toBe('application/json')
   })
 
-  test('Espera um objeto como resposta', () => {
+  test('Espera uma lista de estudantes como resposta', () => {
     expect(body).toBeTypeOf('object')
+    expect(body.length).toBeGreaterThan(0)
   })
 })
 
-describe('Criação de estudante', () => {
+describe('Buscar estudante', () => {
+  let newStudentBody: IStudent
+  let response: Response
+  let body: IStudent
+
+  beforeAll(async () => {
+    const newStudentResponse = await createStudentService(mockStudentData)
+    newStudentBody = await newStudentResponse.json()
+
+    if (newStudentBody.id) {
+      response = await getStudentByIdService(newStudentBody.id)
+      body = await response.json()
+    }
+  }, 30000)
+
+  test('Espera o status 200 como resposta', async () => {
+    expect(response.status).toBe(200)
+  })
+
+  test('Espera que o content-type seja application/json', () => {
+    expect(response.headers.get('Content-Type')).toBe('application/json')
+  })
+
+  test('Espera encontrar com sucesso os dados de um estudante', () => {
+    expect(body).toEqual(newStudentBody)
+  })
+})
+
+describe('Criar estudante', () => {
   let response: Response
   let body: IStudent
 
@@ -51,7 +82,7 @@ describe('Criação de estudante', () => {
     body = await response.json()
   }, 30000)
 
-  test('Espera o status de resposta 201', async () => {
+  test('Espera o status 201 como resposta', async () => {
     expect(response.status).toBe(201)
   })
 
@@ -59,14 +90,21 @@ describe('Criação de estudante', () => {
     expect(response.headers.get('Content-Type')).toBe('application/json')
   })
 
-  test('Espera um objeto de estudante como resposta', () => {
+  test('Espera que a resposta esteja de acordo com o schema de estudante', () => {
     for (const key in mockStudentResponse) {
       expect(body).toHaveProperty(key)
     }
   })
+
+  test('Espera um objeto de estudante com todos os valores preenchidos', () => {
+    const verifyValues = Object.values(body).every(
+      (value) => value !== null && value !== undefined
+    )
+    expect(verifyValues).toBeTruthy()
+  })
 })
 
-describe('Atualização de estudante', () => {
+describe('Atualizar estudante', () => {
   let newStudentBody: IStudent
   let response: Response
   let body: IStudent
@@ -81,33 +119,31 @@ describe('Atualização de estudante', () => {
     body = await response.json()
   }, 30000)
 
-  test('Espera o status de resposta 200', async () => {
+  test('Espera o status 200 como resposta', async () => {
     expect(response.status).toBe(200)
   })
 
   test('Espera que o content-type seja application/json', () => {
-    expect(response.headers.get('Content-Type')).toBe('application/json')
+    expect(response.headers.get('Content-Type')).toEqual('application/json')
   })
 
   test('Espera uma atualização com sucesso dos dados de um estudante', () => {
-    expect(newStudentBody.birthdate).not.toBe(body.birthdate)
+    expect(body.birthdate).not.toBe(newStudentBody.birthdate)
     expect(body.birthdate).toBe('05-04-1996')
   })
 })
 
-describe('Exclusão de estudante', () => {
+describe('Excluir estudante', () => {
   let response: Response
 
   beforeAll(async () => {
     const newStudentResponse = await createStudentService(mockStudentData)
     const newStudentBody = await newStudentResponse.json()
 
-    if (newStudentBody && newStudentBody.id) {
-      response = await deleteStudentService(newStudentBody.id)
-    }
+    response = await deleteStudentService(newStudentBody.id)
   }, 30000)
 
-  test('Espera o status de resposta 200', async () => {
+  test('Espera o status 200 como resposta', async () => {
     expect(response.status).toBe(200)
   })
 })
