@@ -1,18 +1,18 @@
 <template>
   <div class="container mx-auto p-6 mt-4">
     <div class="max-w-md mx-auto">
-      <div class="flex flex-row items-center">
-        <button
-          type="button"
-          @click="handleGoBack"
-          class="text-gray-900 bg-white border border-gray-300 font-medium rounded-lg px-3 py-2 text-xs"
-        >
-          ← Voltar
-        </button>
-      </div>
+      <button
+        type="button"
+        @click="handleGoBack"
+        class="font-medium text-xs text-gray-900 bg-white border border-gray-300 rounded-lg px-3 py-2"
+      >
+        ← Voltar
+      </button>
+
       <h4 class="text-2xl font-bold mt-4">
         {{ isEditing ? 'Atualização' : 'Cadastro' }}
       </h4>
+
       <p class="text-sm lg:text-lg font-normal text-gray-500">
         {{
           isEditing
@@ -20,23 +20,24 @@
             : 'Preencha o formulário abaixo com os dados do aluno'
         }}
       </p>
+
       <FormKit
         type="form"
         id="studentForm"
         :actions="false"
         :plugins="[zodPlugin]"
-        @submit="submitHandler"
         :config="{
           classes: {
             outer: 'mt-4 mb-4',
-            label: 'block text-sm font-medium text-gray-900 mb-2',
+            label: 'font-medium text-sm text-gray-900 mb-2',
             input: `
               bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg 
-              focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5
+              focus:ring-blue-500 focus:border-blue-500 w-full p-2.5
             `,
-            message: 'text-red-500 text-xs mt-1'
+            message: 'text-xs text-red-500 mt-1'
           }
         }"
+        @submit="submitHandler"
       >
         <FormKit
           type="text"
@@ -89,19 +90,19 @@ import { useRouter, useRoute } from 'vue-router'
 import { createZodPlugin } from '@formkit/zod'
 import { useStudentStore } from '@/stores/students'
 import { StudentSchema } from '@/schemas'
+import type { IStudent } from '@/types'
 import { reset } from '@formkit/vue'
 import { toast } from 'vue3-toastify'
-import type { IStudent } from '@/types'
 
 const { replace } = useRouter()
 const { params } = useRoute()
 const {
   create,
   update,
-  fetchStudentById,
-  formState,
+  getById,
   setFormState,
-  $reset,
+  resetStore,
+  formState,
   loading
 } = useStudentStore()
 
@@ -113,68 +114,66 @@ const [zodPlugin, submitHandler] = createZodPlugin(
 )
 
 onBeforeMount(() => {
+  // Na edição do estudante: antes de montar o componete, busca os dados e autopreenche o formulário
   handleSetFormState()
 })
 
+function handleGoBack() {
+  replace({ path: '/' })
+}
+
+function normalizeDate(date: string) {
+  return date.split('-').reverse().join('-')
+}
+
+function sucessAlert(msg: string) {
+  toast(msg, {
+    type: 'success',
+    position: 'top-center',
+    dangerouslyHTMLString: true
+  })
+}
+
 async function handleSetFormState() {
   if (isEditing && typeof params.id === 'string') {
-    const student = await fetchStudentById(params.id)
+    const student = await getById(params.id)
 
     if (student.id) {
       setFormState({
         ...student,
-        birthdate: student.birthdate.split('-').reverse().join('-'),
-        enrollmentPeriod: student.enrollmentPeriod
-          .split('-')
-          .reverse()
-          .join('-')
+        birthdate: normalizeDate(student.birthdate),
+        enrollmentPeriod: normalizeDate(student.enrollmentPeriod)
       })
     }
   }
 }
 
 async function handleCreateStudent(form: IStudent) {
-  const data = {
+  const newStudent = await create({
     ...form,
-    birthdate: form.birthdate.split('-').reverse().join('-'),
-    enrollmentPeriod: form.enrollmentPeriod.split('-').reverse().join('-')
-  }
-
-  const newStudent = await create(data)
+    birthdate: normalizeDate(form.birthdate),
+    enrollmentPeriod: normalizeDate(form.enrollmentPeriod)
+  })
 
   if (newStudent.id) {
-    toast('Aluno cadastrado com sucesso!', {
-      type: 'success',
-      position: 'top-center',
-      dangerouslyHTMLString: true
-    })
-    $reset()
+    sucessAlert('Aluno cadastrado com sucesso!')
     reset('studentForm')
+    resetStore()
   }
 }
 
 async function handleUpdateStudent(form: IStudent) {
   if (typeof params.id === 'string') {
-    const data = {
+    const updateStudent = await update({
       ...form,
+      id: params.id,
       birthdate: form.birthdate.split('-').reverse().join('-'),
-      enrollmentPeriod: form.enrollmentPeriod.split('-').reverse().join('-'),
-      id: params.id
-    }
-
-    const updateStudent = await update(data)
+      enrollmentPeriod: form.enrollmentPeriod.split('-').reverse().join('-')
+    })
 
     if (updateStudent) {
-      toast('Aluno atualizado com sucesso!', {
-        type: 'success',
-        position: 'top-center',
-        dangerouslyHTMLString: true
-      })
+      sucessAlert('Aluno atualizado com sucesso!')
     }
   }
-}
-
-function handleGoBack() {
-  replace({ path: '/' })
 }
 </script>
