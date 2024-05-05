@@ -27,9 +27,8 @@ export const handlers = [
   }),
 
   http.put('/students/:id', async ({ params, request }) => {
-    const { id } = params
     const student = await request.json()
-    storage.set(id.toString(), student)
+    storage.set(params.id.toString(), student)
     return HttpResponse.json(student)
   }),
 
