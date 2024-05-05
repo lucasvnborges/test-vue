@@ -73,10 +73,9 @@
           :disabled="loading"
           :label="isEditing ? 'Atualizar' : 'Cadastrar'"
           :classes="{
-            input: `
-              $reset text-gray-900 bg-white border border-gray-300 focus:outline-none 
-              font-medium rounded-lg text-sm px-5 py-2.5 w-full mt-2
-            `
+            input: `$reset text-gray-900 bg-white border border-gray-300 focus:outline-none 
+              hover:ring-4 hover:ring-gray-100 font-medium rounded-lg 
+              text-sm px-5 py-2.5 w-full mt-2`
           }"
         />
       </FormKit>
