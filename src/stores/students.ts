@@ -22,13 +22,9 @@ export const useStudentStore = defineStore('students', () => {
   const form = ref<IStudent>(initialFormValues)
   const isLoading = ref<boolean>(false)
 
-  function $reset() {
+  function resetStore() {
     list.value = []
     form.value = initialFormValues
-  }
-
-  function findById(id: string) {
-    return list.value.find((s) => s.id === id)
   }
 
   function setFormState(info: IStudent) {
@@ -36,43 +32,60 @@ export const useStudentStore = defineStore('students', () => {
   }
 
   async function fetchAll() {
-    const response = await getStudentsService()
-    const data = await response.json()
-    list.value = data
+    try {
+      const response = await getStudentsService()
+      const data = await response.json()
+      list.value = data
+      return data
+    } finally {
+      isLoading.value = false
+    }
   }
 
-  async function fetchStudentById(id: string) {
-    const response = await getStudentByIdService(id)
-    return response.json()
+  async function getById(id: string) {
+    try {
+      const response = await getStudentByIdService(id)
+      return response.json()
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function create(info: IStudent) {
-    isLoading.value = true
-    const response = await createStudentService(info)
-    const data = await response.json()
+    try {
+      isLoading.value = true
+      const response = await createStudentService(info)
+      const data = await response.json()
 
-    list.value.push(data)
-    isLoading.value = false
-    return data
+      list.value.push(data)
+      return data
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function update(info: IStudent) {
-    isLoading.value = true
-    const response = await updateStudentService(info)
-    const data = await response.json()
-    const index = list.value.findIndex((student) => student.id === data.id)
+    try {
+      isLoading.value = true
+      const response = await updateStudentService(info)
+      const data = await response.json()
+      const index = list.value.findIndex((student) => student.id === data.id)
 
-    list.value[index] = data
-    isLoading.value = false
-    return true
+      list.value[index] = data
+      isLoading.value = false
+      return true
+    } finally {
+      isLoading.value = false
+    }
   }
 
   async function exclude(id: string) {
-    const response = await deleteStudentService(id)
-
-    if (response) {
+    try {
+      await deleteStudentService(id)
       list.value = list.value.filter((s) => s.id !== id)
-      if (!findById(id)) return true
+      return true
+    } finally {
+      isLoading.value = false
     }
   }
 
@@ -81,14 +94,13 @@ export const useStudentStore = defineStore('students', () => {
   const loading = computed(() => isLoading)
 
   return {
-    $reset,
-    formState,
+    resetStore,
     students,
+    formState,
     loading,
     setFormState,
-    findById,
     fetchAll,
-    fetchStudentById,
+    getById,
     create,
     update,
     exclude
