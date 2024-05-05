@@ -155,7 +155,7 @@ async function handleCreateStudent(form: IStudent) {
     enrollmentPeriod: normalizeDate(form.enrollmentPeriod)
   })
 
-  if (newStudent.id) {
+  if (newStudent && newStudent.id) {
     sucessAlert('Aluno cadastrado com sucesso!')
     reset('studentForm')
     resetStore()
