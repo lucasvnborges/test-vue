@@ -1,5 +1,5 @@
 <template>
-  <div class="container md:mx-auto">
+  <div class="container md:mx-auto" id="listagem-estudantes">
     <div class="max-w-4xl md:mx-auto overflow-x-auto mt-12">
       <div class="flex flex-row justify-between items-center mb-6">
         <h4 class="font-bold text-2xl">Lista de alunos cadastrados</h4>
