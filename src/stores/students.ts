@@ -36,6 +36,7 @@ export const useStudentStore = defineStore('students', () => {
       isLoading.value = true
       const response = await getStudentsService()
       const data = await response.json()
+
       list.value = data
       return data
     } finally {
@@ -47,6 +48,7 @@ export const useStudentStore = defineStore('students', () => {
     try {
       isLoading.value = true
       const response = await getStudentByIdService(id)
+
       return response.json()
     } finally {
       isLoading.value = false
@@ -74,7 +76,6 @@ export const useStudentStore = defineStore('students', () => {
       const index = list.value.findIndex((student) => student.id === data.id)
 
       list.value[index] = data
-      isLoading.value = false
       return true
     } finally {
       isLoading.value = false
