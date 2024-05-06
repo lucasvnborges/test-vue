@@ -7,7 +7,7 @@ import {
   updateStudentService,
   deleteStudentService,
   getStudentByIdService
-} from '../../services/students'
+} from '@/services/students'
 import type { IStudent } from '@/types'
 import { mockStudentData, mockStudentResponse } from '@/mocks/data'
 
@@ -52,8 +52,8 @@ describe('Buscar estudante', () => {
 
   beforeAll(async () => {
     const newStudentResponse = await createStudentService(mockStudentData)
-    newStudentBody = await newStudentResponse.json()
 
+    newStudentBody = await newStudentResponse.json()
     if (newStudentBody.id) {
       response = await getStudentByIdService(newStudentBody.id)
       body = await response.json()
@@ -100,6 +100,7 @@ describe('Criar estudante', () => {
     const verifyValues = Object.values(body).every(
       (value) => value !== null && value !== undefined
     )
+
     expect(verifyValues).toBeTruthy()
   })
 })
@@ -111,6 +112,7 @@ describe('Atualizar estudante', () => {
 
   beforeAll(async () => {
     const newStudentResponse = await createStudentService(mockStudentData)
+
     newStudentBody = await newStudentResponse.json()
     response = await updateStudentService({
       ...newStudentBody,

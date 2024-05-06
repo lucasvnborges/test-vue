@@ -9,6 +9,7 @@ describe('Schema do estudante', () => {
       birthdate: '2000-01-01',
       enrollmentPeriod: '2024-05-05'
     })
+
     expect(result.error?.errors[0].code).toBe('too_small')
   })
 
@@ -19,6 +20,7 @@ describe('Schema do estudante', () => {
       birthdate: '2000-01-01',
       enrollmentPeriod: '2024-05-05'
     })
+
     expect(result.error?.errors[0].code).toBe('too_small')
   })
 
@@ -29,6 +31,7 @@ describe('Schema do estudante', () => {
       birthdate: '2000-01-01',
       enrollmentPeriod: '2024-05-05'
     })
+
     expect(result.error?.errors[0].code).toBe('too_small')
   })
 
@@ -39,6 +42,7 @@ describe('Schema do estudante', () => {
       birthdate: '2000-01-01',
       enrollmentPeriod: '2024-05-05'
     })
+
     expect(result.error?.errors[0].code).toBe('too_small')
   })
 
@@ -49,6 +53,7 @@ describe('Schema do estudante', () => {
       birthdate: '01/01/2000',
       enrollmentPeriod: '2024-05-05'
     })
+
     expect(result.error?.errors[0].message).toBe(
       'Informe uma data de nascimento válida'
     )
@@ -61,6 +66,7 @@ describe('Schema do estudante', () => {
       birthdate: '2000-01-01',
       enrollmentPeriod: '2024/05/05'
     })
+
     expect(result.error?.errors[0].message).toBe(
       'Informe uma data de ingresso válida'
     )
@@ -74,6 +80,7 @@ describe('Schema do estudante', () => {
       enrollmentPeriod: '2024-05-05'
     }
     const result = StudentSchema.safeParse(data)
+
     expect(result.success).toBe(true)
   })
 })

@@ -1,5 +1,3 @@
-import StudentForm from '@/views/StudentForm.vue'
-import StudentList from '@/views/StudentList.vue'
 import { mount } from '@vue/test-utils'
 import { setupServer } from 'msw/node'
 import { handlers } from '@/mocks/handlers'
@@ -17,6 +15,8 @@ import { createTestingPinia } from '@pinia/testing'
 import { plugin, defaultConfig } from '@formkit/vue'
 import { mockFormData } from '@/mocks/data'
 import router from '@/router'
+import StudentForm from '@/views/StudentForm.vue'
+import StudentList from '@/views/StudentList.vue'
 
 const server = setupServer(...handlers)
 

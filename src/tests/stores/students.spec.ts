@@ -1,8 +1,8 @@
 import { setupServer } from 'msw/node'
-import { handlers } from '@/mocks/handlers'
 import { describe, test, expect, beforeEach, beforeAll, afterAll } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
-import { useStudentStore } from '../../stores/students'
+import { handlers } from '@/mocks/handlers'
+import { useStudentStore } from '@/stores/students'
 import { mockStudentData } from '@/mocks/data'
 
 const server = setupServer(...handlers)
@@ -32,6 +32,7 @@ describe('Gerenciamento de estado dos estudantes', () => {
 
   test('Espera que a lista de estudantes esteja vazia ao resetar o state', async () => {
     const { students, create, resetStore } = useStudentStore()
+
     await create(mockStudentData)
     expect(students.value.length).toBe(1)
     resetStore()
@@ -40,6 +41,7 @@ describe('Gerenciamento de estado dos estudantes', () => {
 
   test('Espera que a lista de estudantes contenha um novo aluno', async () => {
     const { students, create } = useStudentStore()
+
     await create(mockStudentData)
     expect(students.value.length).toBe(1)
   })
