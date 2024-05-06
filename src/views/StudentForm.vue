@@ -166,8 +166,8 @@ async function handleUpdateStudent(form: IStudent) {
     const updateStudent = await update({
       ...form,
       id: params.id,
-      birthdate: form.birthdate.split('-').reverse().join('-'),
-      enrollmentPeriod: form.enrollmentPeriod.split('-').reverse().join('-')
+      birthdate: normalizeDate(form.birthdate),
+      enrollmentPeriod: normalizeDate(form.enrollmentPeriod)
     })
 
     if (updateStudent) {
