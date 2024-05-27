@@ -1,4 +1,4 @@
-# usabit-test-vue
+# Cadastro de alunos
 
 Projeto para guardar as informações dos alunos para futuras utilizações.
 
